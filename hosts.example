@@ -1,0 +1,9 @@
+# If not one master, there are made cluster.
+[master]
+kube-master1 ifcfg=192.168.66.22
+kube-master2 ifcfg=192.168.66.23
+
+[node]
+kube-minion1 ifcfg=192.168.66.24
+kube-minion2 ifcfg=192.168.66.25
+
