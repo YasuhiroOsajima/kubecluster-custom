@@ -1,0 +1,25 @@
+---
+- name: install docker packages
+  yum: name={{ item }} state=present
+  with_items:
+  - docker
+
+# sudo tee /etc/modules-load.d/overlay.conf <<-'EOF'
+# overlay
+# EOF
+
+- name: set overlay docker storage driver
+  lineinfile:
+    dest: /etc/sysconfig/docker-storage-setup
+    line: 'STORAGE_DRIVER="overlay"'
+
+- name: set overlay docker storage driver
+  lineinfile:
+    dest: /etc/sysconfig/docker-storage-setup
+    line: 'STORAGE_DRIVER="overlay"'
+
+- name: systemcd enable docker
+  systemd:
+    name=docker
+    state=started
+    enabled=yes 

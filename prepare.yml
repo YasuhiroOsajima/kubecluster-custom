@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+  connection: local
+  tasks:
+  - name: register hosts file
+    command: python register_vars.py
+
+- hosts: all
+  vars:
+  roles:
+    - prepare
+
