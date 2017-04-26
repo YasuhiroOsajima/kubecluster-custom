@@ -7,3 +7,15 @@ kube-master2 mngip=192.168.66.23
 kube-minion1 mngip=192.168.66.24
 kube-minion2 mngip=192.168.66.25
 
+[loadbalancer]
+kube-minion1 mngip=192.168.66.24
+
+[servers:children]
+master
+node
+loadbalancer
+
+[cluster:children]
+master
+node
+loadbalancer

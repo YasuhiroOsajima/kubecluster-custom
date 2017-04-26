@@ -1,5 +1,5 @@
 hosts_params:
 - {ipaddr: 192.168.66.22, name: kube-master1}
-- {ipaddr: 192.168.66.23, name: kube-master2}
 - {ipaddr: 192.168.66.24, name: kube-minion1}
 - {ipaddr: 192.168.66.25, name: kube-minion2}
+- {ipaddr: 192.168.66.24, name: kube-minion1}
