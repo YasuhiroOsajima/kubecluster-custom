@@ -13,11 +13,10 @@ class CheckInventory(RegisterVars):
         super(CheckInventory, self).__init__()
         'This class has no propertys.'
 
-    def _select_host(self, resultlist, patern):
-        resultlist[0].seek(0)
+    def _select_host(self, fileline_list, patern):
         masterhosts = []
         flag = 0
-        for row in resultlist[0].readlines():
+        for row in fileline_list:
             if patern in row:
                 flag = 1
                 continue
@@ -30,8 +29,11 @@ class CheckInventory(RegisterVars):
         return  map(lambda n:n.strip().split(' mngip='), masterhosts)
 
     def _generate_hostlist(self, resultlist):
-        mastarts = self._select_host(resultlist, '[master]')
-        loadbalancers = self._select_host(resultlist, '[loadbalancer]')
+        resultlist[0].seek(0)
+        fileline_list = resultlist[0].readlines()
+
+        mastarts = self._select_host(fileline_list, '[master]')
+        loadbalancers = self._select_host(fileline_list, '[loadbalancer]')
 
         resultlist[1] = {'masters': mastarts, 'loadbalancers': loadbalancers}
         return resultlist

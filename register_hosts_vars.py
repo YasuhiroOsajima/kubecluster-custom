@@ -20,7 +20,6 @@ class RegisterHostsVars(RegisterVars):
         return resultlist
 
     def _refine_each_param(self, host_ip_list, param_dict):
-        host_ip_list.reverse()
         if not host_ip_list:
             return param_dict
         host_ip = host_ip_list.pop()
@@ -28,6 +27,7 @@ class RegisterHostsVars(RegisterVars):
         return self._refine_each_param(host_ip_list, param_dict)
     
     def _refine_param(self, host_ip_list):
+        host_ip_list.reverse()
         param_dict = {'hosts_params': []}
         return self._refine_each_param(host_ip_list, param_dict)
 
