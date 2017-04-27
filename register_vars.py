@@ -32,15 +32,15 @@ class RegisterVars(object):
         resultlist[0].write(yaml.dump(param_dict))
         return resultlist
     
-    def _func_file(self, arglist):
+    def _flow(self, arglist):
         return lambda flag: (
                    lambda func: self._close_file( func( self._open_file(arglist)(flag) ) )
                )
     
     def main(self, INVENTORY_FILE, VARS_FILE):
         read_arglist = [INVENTORY_FILE, []]
-        host_ip_list = self._func_file(read_arglist)('r')(self._generate_hostlist)[1]
+        host_ip_list = self._flow(read_arglist)('r')(self._generate_hostlist)[1]
     
         write_arglist = [VARS_FILE, host_ip_list]
-        self._func_file(write_arglist)('w')(self._register_varsfile)
+        self._flow(write_arglist)('w')(self._register_varsfile)
     

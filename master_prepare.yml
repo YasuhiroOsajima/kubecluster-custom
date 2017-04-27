@@ -2,4 +2,4 @@
 - hosts: master
   vars:
   roles:
-    - master
+    - master_prepare

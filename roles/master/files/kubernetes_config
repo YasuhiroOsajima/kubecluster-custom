@@ -1,0 +1,5 @@
+KUBE_ETCD_SERVERS="--etcd-servers=http://{{ masterip }}:2379"
+KUBE_MASTER="--master=http://{{ masterip }}:8080"
+KUBE_LOGTOSTDERR="--logtostderr=false --log-dir=/var/log/kubernetes"
+KUBE_LOG_LEVEL="--v=0"
+KUBE_ALLOW_PRIV="--allow-privileged=false"

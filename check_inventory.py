@@ -39,10 +39,18 @@ class CheckInventory(RegisterVars):
         return resultlist
 
     def _refine_param(self, host_ip_list):
+        masters = map(lambda n: n[0], host_ip_list['masters'])
         if len(host_ip_list['masters']) > 1:
-            return {'clusterd': True, 'masterip': host_ip_list['loadbalancers'][0][1]}
+            clustermember = ','.join(map(lambda n: "%s=http://%s:2380" % (n[0], n[1]),
+                                         host_ip_list['masters']))
+            return ({'clusterd': True,
+                     'masterip': host_ip_list['loadbalancers'][0][1],
+                     'masters': masters,
+                     'clustermember': clustermember})
         else:
-            return {'clusterd': False, 'masterip': host_ip_list['masters'][0][1]}
+            return ({'clusterd': False,
+                     'masterip': host_ip_list['masters'][0][1],
+                     'masters': masters})
 
 
 if __name__ == '__main__':

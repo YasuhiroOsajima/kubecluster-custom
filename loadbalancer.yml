@@ -1,0 +1,5 @@
+---
+- hosts: loadbalancer
+  vars:
+  roles:
+    - loadbalancer

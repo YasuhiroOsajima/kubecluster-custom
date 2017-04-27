@@ -1,24 +1,4 @@
 ---
-- name: create kubernetes log directory
-  file:
-    path=/var/log/kubernetes
-    state=directory
-    owner=kube
-    group=kube
-    mode=0755
-
-- name: setting kubernetes bese
-  copy: 
-    src=kubernetes_config
-    dest=/etc/kubernetes/config
-    owner=root
-    group=root
-    mode=0644
-
-
-
-
-
 - name: install master packages
   yum: name={{ item }} state=present
   with_items:
@@ -52,5 +32,11 @@
     name=etcd
     state=started
     enabled=yes
+
+- name: setting etcd for flannel
+  shell: >
+    etcdctl mkdir /kube-centos/network;
+    etcdctl mk /kube-centos/network/config 
+      '{ "Network": "172.30.0.0/16", "SubnetLen": 24, "Backend": { "Type": "vxlan" } }'
 
 
