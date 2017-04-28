@@ -1,56 +1,27 @@
 ---
-- name: create kubernetes log directory
-  file:
-    path=/var/log/kubernetes
-    state=directory
-    owner=kube
-    group=kube
-    mode=0755
-
-- name: setting kubernetes bese
+- name: setting kube-apiserver
   copy: 
-    src=kubernetes_config
-    dest=/etc/kubernetes/config
+    src=apiserver
+    dest=/etc/kubernetes/apiserver
     owner=root
     group=root
     mode=0644
 
-
-
-
-
-- name: install master packages
-  yum: name={{ item }} state=present
-  with_items:
-  - kubernetes-master
-  - etcd
-  - flannel
-
-- name: setting clustered etcd
-  blockinfile:
-    dest=/etc/etcd/etcd.conf
-    content='ETCD_NAME={{ inventory_hostname_short }}
-      ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
-      ETCD_LISTEN_PEER_URLS="http://{{ mngip }}:2380"
-      ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
-      ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ mngip }}:2380"
-      ETCD_INITIAL_CLUSTER="{{ clustermember }}"
-      ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
-      ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"'
-  when: clusterd | default(False) == True
-
-- name: setting clustered etcd new
-  lineinfile:
-    dest=/etc/etcd/etcd.conf
-    state=present
-    line='ETCD_INITIAL_CLUSTER_STATE="new"'
-  run_once: true
-  when: clusterd | default(False) == True
-
-- name: systemcd enable etcd
+- name: systemcd enable kube-apiserver
   systemd:
-    name=etcd
+    name=kube-apiserver
     state=started
-    enabled=yes
+    enabled=yes 
 
+- name: systemcd enable kube-controller-manager
+  systemd:
+    name=kube-controller-manager
+    state=started
+    enabled=yes 
+
+- name: systemcd enable kube-scheduler
+  systemd:
+    name=kube-scheduler
+    state=started
+    enabled=yes 
 

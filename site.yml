@@ -1,6 +1,8 @@
 ---
-- include: common.yml
+- include: prepare.yml
 - include: master_prepare.yml
+- include: minion_prepare.yml
 - include: loadbalancer.yml
+- include: common.yml
 - include: master.yml
-- include: node.yml
+- include: minion.yml

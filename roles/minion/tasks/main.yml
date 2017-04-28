@@ -1,0 +1,21 @@
+---
+- name: setting kubelet
+  copy: 
+    src=kubelet
+    dest=/etc/kubernetes/kubelet
+    owner=root
+    group=root
+    mode=0644
+
+- name: systemcd enable kube-proxy
+  systemd:
+    name=kube-proxy
+    state=started
+    enabled=yes 
+
+- name: systemcd enable kubelet
+  systemd:
+    name=kubelet
+    state=started
+    enabled=yes 
+

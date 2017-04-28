@@ -1,0 +1,5 @@
+---
+- hosts: minion
+  vars:
+  roles:
+    - minion_prepare
