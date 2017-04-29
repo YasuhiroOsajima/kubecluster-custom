@@ -1,7 +1,7 @@
 ---
 - name: setting kubelet
-  copy: 
-    src=kubelet
+  template: 
+    src=kubelet.j2
     dest=/etc/kubernetes/kubelet
     owner=root
     group=root

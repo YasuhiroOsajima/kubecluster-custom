@@ -1,7 +1,7 @@
 ---
 - name: setting kube-apiserver
-  copy: 
-    src=apiserver
+  template: 
+    src=apiserver.j2
     dest=/etc/kubernetes/apiserver
     owner=root
     group=root

@@ -1,6 +1,7 @@
 upstream etcd {
 {% for master in masters %}
     server {{ master }}:2379;
+{% endfor %}
 }
 server {
     listen          2379;

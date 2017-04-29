@@ -7,16 +7,22 @@
   - flannel
 
 - name: setting clustered etcd
+  file:
+    path=/etc/etcd/etcd.conf
+    state=absent
+
+- name: setting clustered etcd
   blockinfile:
     dest=/etc/etcd/etcd.conf
-    content='ETCD_NAME={{ inventory_hostname_short }}
-      ETCD_DATA_DIR="/var/lib/etcd/default.etcd"
-      ETCD_LISTEN_PEER_URLS="http://{{ mngip }}:2380"
-      ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"
-      ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ mngip }}:2380"
-      ETCD_INITIAL_CLUSTER="{{ clustermember }}"
-      ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"
-      ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"'
+    content='ETCD_NAME={{ inventory_hostname_short }}\n
+    ETCD_DATA_DIR="/var/lib/etcd/default.etcd"\n
+    ETCD_LISTEN_PEER_URLS="http://{{ mngip }}:2380"\n
+    ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"\n
+    ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ mngip }}:2380"\n
+    ETCD_INITIAL_CLUSTER="{{ clustermember }}"\n
+    ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"\n
+    ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"'
+    create=yes
   when: clusterd | default(False) == True
 
 - name: setting clustered etcd new
@@ -33,10 +39,15 @@
     state=started
     enabled=yes
 
+- name: check etcd setting for flannel
+  shell: etcdctl get /kube-centos/network/config
+  register: result
+
 - name: setting etcd for flannel
   shell: >
     etcdctl mkdir /kube-centos/network;
-    etcdctl mk /kube-centos/network/config 
-      '{ "Network": "172.30.0.0/16", "SubnetLen": 24, "Backend": { "Type": "vxlan" } }'
+    etcdctl mk /kube-centos/network/config '{ "Network": "172.30.0.0/16", "SubnetLen": 24, "Backend": { "Type": "vxlan" } }'
+  run_once: true
+  when: result.rc == 1
 
 

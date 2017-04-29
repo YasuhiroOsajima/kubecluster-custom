@@ -1,0 +1,4 @@
+---
+- hosts: minion
+  roles:
+    - minion

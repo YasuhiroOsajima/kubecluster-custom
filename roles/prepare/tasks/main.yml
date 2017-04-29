@@ -20,7 +20,7 @@
     dest=/etc/hosts
     state=present
     line='{{ item.ipaddr }}  {{ item.name }}'
-  with_items: hosts_params
+  with_items: '{{ hosts_params }}'
 
 - name: install docker packages
   yum: name=docker state=present

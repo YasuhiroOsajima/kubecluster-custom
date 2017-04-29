@@ -3,15 +3,21 @@
   yum: name=nginx state=present
 
 - name: setting api loadbalance
-  copy: 
-    src={{ item }}
+  template: 
+    src=api-server.conf.j2
     dest=/etc/nginx/conf.d/api-server.conf
     owner=root
     group=root
     mode=0644
-  with_fileglob:
-    - api-server.conf
-    - etcd.conf
+  when: clusterd | default(False) == True
+
+- name: setting etcd loadbalance
+  template: 
+    src=etcd.conf.j2
+    dest=/etc/nginx/conf.d/etcd.conf
+    owner=root
+    group=root
+    mode=0644
   when: clusterd | default(False) == True
 
 - name: systemcd enable nginx
