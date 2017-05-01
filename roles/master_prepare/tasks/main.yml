@@ -40,7 +40,7 @@
     enabled=yes
 
 - name: check etcd setting for flannel
-  shell: etcdctl get /kube-centos/network/config ; echo $?
+  shell: etcdctl get /kube-centos/network/config
   register: result
   changed_when: False
   ignore_errors: True
@@ -50,6 +50,6 @@
     etcdctl mkdir /kube-centos/network;
     etcdctl mk /kube-centos/network/config '{ "Network": "172.30.0.0/16", "SubnetLen": 24, "Backend": { "Type": "vxlan" } }'
   run_once: true
-  when: result.rc == 1
+  when: result.stderr.find("Key not found") != -1
 
 
