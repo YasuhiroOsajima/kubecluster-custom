@@ -40,8 +40,10 @@
     enabled=yes
 
 - name: check etcd setting for flannel
-  shell: etcdctl get /kube-centos/network/config
+  shell: etcdctl get /kube-centos/network/config ; echo $?
   register: result
+  changed_when: False
+  ignore_errors: True
 
 - name: setting etcd for flannel
   shell: >
