@@ -1,4 +1,0 @@
-clusterd: true
-clustermember: kube-master1=http://192.168.66.22:2380,kube-master2=http://192.168.66.23:2380
-masterip: 192.168.66.24
-masters: [kube-master1, kube-master2]

@@ -17,11 +17,11 @@
     content='ETCD_NAME={{ inventory_hostname_short }}\n
     ETCD_DATA_DIR="/var/lib/etcd/default.etcd"\n
     ETCD_LISTEN_PEER_URLS="http://{{ mngip }}:2380"\n
-    ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"\n
+    ETCD_LISTEN_CLIENT_URLS="http://{{ mngip }}:2379,http://127.0.0.1:2379"\n
     ETCD_INITIAL_ADVERTISE_PEER_URLS="http://{{ mngip }}:2380"\n
     ETCD_INITIAL_CLUSTER="{{ clustermember }}"\n
     ETCD_INITIAL_CLUSTER_TOKEN="etcd-cluster"\n
-    ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"'
+    ETCD_ADVERTISE_CLIENT_URLS="http://{{ mngip }}:2379"'
     create=yes
   when: clusterd | default(False) == True
 
