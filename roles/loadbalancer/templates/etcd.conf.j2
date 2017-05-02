@@ -1,6 +1,10 @@
 upstream etcd {
 {% for master in masters %}
+{% if loop.first %}
     server {{ master }}:2379;
+{% else %}
+    server {{ master }}:2379 backup;
+{% endif %}
 {% endfor %}
 }
 server {

@@ -1,6 +1,10 @@
 upstream kube-apiserver {
 {% for master in masters %}
+{% if loop.first %}
     server {{ master }}:8080;
+{% else %}
+    server {{ master }}:8080 backup;
+{% endif %}
 {% endfor %}
 }
 server {
