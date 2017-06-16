@@ -33,6 +33,17 @@
   run_once: true
   when: clusterd | default(False) == True
 
+- name: setting unclustered etcd
+  blockinfile:
+    dest=/etc/etcd/etcd.conf
+    content='ETCD_NAME=default\n
+    ETCD_DATA_DIR="/var/lib/etcd/default.etcd"\n
+    ETCD_LISTEN_PEER_URLS="http://localhost:2380"\n
+    ETCD_LISTEN_CLIENT_URLS="http://0.0.0.0:2379"\n
+    ETCD_ADVERTISE_CLIENT_URLS="http://0.0.0.0:2379"\n'
+    create=yes
+  when: clusterd | default(False) == False
+
 - name: systemcd enable etcd
   systemd:
     name=etcd
