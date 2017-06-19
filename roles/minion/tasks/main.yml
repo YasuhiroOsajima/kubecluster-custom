@@ -1,4 +1,12 @@
 ---
+- name: setting kube-proxy
+  template: 
+    src=proxy.j2
+    dest=/etc/kubernetes/proxy
+    owner=root
+    group=root
+    mode=0644
+
 - name: setting kubelet
   template: 
     src=kubelet.j2
