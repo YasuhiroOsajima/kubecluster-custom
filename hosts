@@ -1,15 +1,15 @@
 # If not one master, there are made HA cluster.
 # If you make HA master cluster, you have to specify 3 or more master node.
 [master]
-kube-master1 mngip=192.168.66.22
-kube-master2 mngip=192.168.66.23
-kube-master3 mngip=192.168.66.24
+kube-master1 mngip=192.168.66.51
+kube-master2 mngip=192.168.66.52
+kube-master3 mngip=192.168.66.53
 
 [minion]
-kube-minion1 mngip=192.168.66.25
+kube-minion1 mngip=192.168.66.54
 
 [loadbalancer]
-kube-minion1 mngip=192.168.66.25
+ansible1 mngip=192.168.66.55
 
 [servers:children]
 master
@@ -20,3 +20,7 @@ loadbalancer
 master
 minion
 loadbalancer
+
+[kubeservers:children]
+master
+minion

@@ -1,4 +1,4 @@
 clusterd: true
-clustermember: kube-master1=http://192.168.66.22:2380,kube-master2=http://192.168.66.23:2380,kube-master3=http://192.168.66.24:2380
-masterip: 192.168.66.25
+clustermember: kube-master1=http://192.168.66.51:2380,kube-master2=http://192.168.66.52:2380,kube-master3=http://192.168.66.53:2380
+masterip: 192.168.66.55
 masters: [kube-master1, kube-master2, kube-master3]
