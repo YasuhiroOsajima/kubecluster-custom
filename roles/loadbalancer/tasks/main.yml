@@ -1,28 +1,55 @@
 ---
-- name: install nginx
-  yum: name=nginx state=present
+- name: install haproxy
+  yum: name=haproxy state=present
+  when: clusterd | default(False) == True
 
-- name: setting api loadbalance
+- name: setting loadbalance
   template: 
-    src=api-server.conf.j2
-    dest=/etc/nginx/conf.d/api-server.conf
+    src=haproxy.cfg.j2
+    dest=/etc/haproxy/haproxy.cfg
     owner=root
     group=root
     mode=0644
   when: clusterd | default(False) == True
 
-- name: setting etcd loadbalance
-  template: 
-    src=etcd.conf.j2
-    dest=/etc/nginx/conf.d/etcd.conf
+- name: setting loadbalance log
+  copy: 
+    src=haproxy.conf
+    dest=/etc/rsyslog.d/haproxy.conf
     owner=root
     group=root
     mode=0644
   when: clusterd | default(False) == True
 
-- name: systemcd enable nginx
+- name: setting loadbalance log directory
+  file:
+    path=/var/log/haproxy
+    state=directory
+    owner=root
+    group=root
+    mode=0755
+  when: clusterd | default(False) == True
+
+- name: setting loadbalance log lotate
+  copy: 
+    src=haproxy
+    dest=/etc/logrotate.d/haproxy
+    owner=root
+    group=root
+    mode=0644
+  when: clusterd | default(False) == True
+
+- name: systemcd restart rsyslog
   systemd:
-    name=nginx
+    name=rsyslog
+    state=restarted
+    enabled=yes
+  when: clusterd | default(False) == True
+
+- name: systemcd enable haproxy
+  systemd:
+    name=haproxy
     state=started
     enabled=yes
+  when: clusterd | default(False) == True
 
