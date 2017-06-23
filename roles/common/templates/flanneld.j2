@@ -1,3 +1,7 @@
+{% if ansible_fqdn in groups['master'] %}
+FLANNEL_ETCD_ENDPOINTS="http://127.0.0.1:2379"
+{% else %}
 FLANNEL_ETCD_ENDPOINTS="http://{{ masterip }}:2379"
+{% endif %}
 FLANNEL_ETCD_PREFIX="/kube-centos/network"
 FLANNEL_OPTIONS="--iface=enp0s8"

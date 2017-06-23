@@ -1,5 +1,15 @@
+{% if ansible_fqdn in groups['master'] %}
+KUBE_ETCD_SERVERS="--etcd-servers=http://127.0.0.1:2379"
+{% else %}
 KUBE_ETCD_SERVERS="--etcd-servers=http://{{ masterip }}:2379"
+{% endif %}
+
+{% if ansible_fqdn in groups['master'] %}
+KUBE_MASTER="--master=http://127.0.0.1:8080"
+{% else %}
 KUBE_MASTER="--master=http://{{ masterip }}:8080"
+{% endif %}
+
 KUBE_LOGTOSTDERR="--logtostderr=false --log-dir=/var/log/kubernetes"
 KUBE_LOG_LEVEL="--v=0"
 KUBE_ALLOW_PRIV="--allow-privileged=false"
